@@ -27,15 +27,32 @@
   Canteen.prototype = {
     /**
      * push instruction onto the stack
-     * @method pushMethod
+     * @method _pushMethod
      * @param {String} method
      * @param {arguments} arguments
+     * @private
      */
-    pushMethod: function(method, arguments) {
+    _pushMethod: function(method, arguments) {
       this.stack.push({
         method: method,
         arguments: Array.prototype.slice.call(arguments, 0)
       }); 
+
+      this._validate();
+    },
+    /**
+     * validate the stack.  For now, this means making sure that it doesn't exceed
+     *  the STACK_SIZE.  if it does, then shorten the stack starting from the beginning
+     * @method _validate
+     * @private
+     */
+    _validate: function() {
+      var stack = this.stack,
+          len = stack.length,
+          exceded = len - Canteen.globals.STACK_SIZE;
+      if (exceded > 0) {
+        this.stack = stack.slice(exceded);
+      }
     },
     /**
      * get a stack of operations
@@ -108,7 +125,7 @@
   function observe(key, method) {
     CanvasRenderingContext2D.prototype[key] = function() {
       var ret = method.apply(this, arguments);
-      this.canteen.pushMethod(key, arguments);
+      this.canteen._pushMethod(key, arguments);
       return ret;
     }
   }

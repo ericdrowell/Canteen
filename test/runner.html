@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+  <head>
+    <meta charset="utf-8">
+    <title>Canteen Tests</title>
+    <link rel="stylesheet" href="../node_modules/mocha/mocha.css" />
+    <style>
+      #mocha {
+        padding: 0;
+        margin: 0;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Canteen Tests</h1>
+
+    <!-- mocha requires this element -->
+    <div id="mocha"></div>
+
+    <script src="../node_modules/mocha/mocha.js"></script>
+    <script src="../node_modules/chai/chai.js"></script>
+    <script src="runner.js"></script>
+    <script src="all-tests.js"></script>
+
+    <script>
+      if (window.mochaPhantomJS) { mochaPhantomJS.run(); }
+      else { mocha.run(); }
+    </script>
+  </body>
+</html>

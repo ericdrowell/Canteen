@@ -1,5 +1,9 @@
-;(function() {
+(function() {
   // ================================ Utils ================================
+  /**
+   * each iterator
+   * @function
+   */ 
   function each(arr, func) {
     var len = arr.length,
         n;
@@ -13,6 +17,7 @@
 
   /**
    * Canteen Constructor
+   * @constructor
    */
   Canteen = function() {
     this.stack = [];
@@ -21,7 +26,10 @@
   // Canteen methods
   Canteen.prototype = {
     /**
-     * push instruction onto the stacks
+     * push instruction onto the stack
+     * @method pushMethod
+     * @param {String} method
+     * @param {arguments} arguments
      */
     pushMethod: function(method, arguments) {
       this.stack.push({
@@ -31,7 +39,9 @@
     },
     /**
      * get a stack of operations
-     */    
+     * @method getStack
+     * @param {String} [type='strict'] - "strict" or "loose"
+     */  
     getStack: function(type) {
       var ret = [];
 
@@ -48,20 +58,32 @@
     },
     /**
      * serialize a stack into a string
-     */
+     * @method serialize
+     * @param {String} [type='strict'] - "strict" or "loose"
+     */  
     serialize: function(type) {
       return JSON.stringify(this.getStack(type));
     },
     /**
      * convert a stack into a small hash string for easy comparisons
-     */
+     * @method hash
+     * @param {String} [type='strict'] - "strict" or "loose"
+     */  
     hash: function(type) {
       return Canteen.md5(this.serialize(type));
     }
   };
 
   // ================================ Global Config ================================
-
+  /**
+   * global config
+   * these globals can be changed at anytime - they are not cached
+   * @method hash
+   * @static
+   * @example 
+   *  // change stack size to 3000
+   *  Canteen.globals.STACK_SIZE = 3000;
+   */ 
   Canteen.globals = {
     STACK_SIZE: 100
   };

@@ -14,6 +14,14 @@ module.exports = function(grunt) {
       dev: {
         src: files,
         dest: 'dist/canteen.js'
+      },
+      devLicense: {
+        src: ['license.js', 'dist/canteen.js'],
+        dest: 'dist/canteen.js'
+      },
+      prodLicense: {
+        src: ['license.js', 'dist/canteen.min.js'],
+        dest: 'dist/canteen.min.js'
       }
     },
     uglify: {
@@ -71,6 +79,6 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-watch');
 
   // Tasks
-  grunt.registerTask('build', ['clean:dist', 'concat:dev', 'uglify:prod']);
+  grunt.registerTask('build', ['clean:dist', 'concat:dev', 'uglify:prod', 'concat:devLicense', 'concat:prodLicense']);
 
 };

@@ -1,14 +1,21 @@
 ;(function() {
+  // ================================ Utils ================================
+  function each(arr, func) {
+    var len = arr.length,
+        n;
+
+    for (n=0; n<len; n++) {
+      func(n, arr[n]);
+    }
+  }
+
   // ================================ Canteen Class ================================
 
   /**
    * Canteen Constructor
    */
   Canteen = function() {
-    this.stack = {
-      strict: [],
-      loose: []
-    };
+    this.stack = [];
   };
 
   // Canteen methods
@@ -17,23 +24,46 @@
      * push instruction onto the stacks
      */
     pushMethod: function(method, arguments) {
-      this.stack.strict.push({
+      this.stack.push({
         method: method,
         arguments: Array.prototype.slice.call(arguments, 0)
       }); 
-    },    
+    },
+    /**
+     * get a stack of operations
+     */    
+    getStack: function(type) {
+      var ret = [];
+
+      if (!type || type === 'strict') {
+        ret = this.stack;
+      }
+      else {
+        each(this.stack, function(n, el) {
+          ret.push(el.method);
+        });
+      }
+
+      return ret;
+    },
     /**
      * serialize a stack into a string
      */
     serialize: function(type) {
-      return JSON.stringify(this.stack[type || 'strict']);
+      return JSON.stringify(this.getStack(type));
     },
     /**
      * convert a stack into a small hash string for easy comparisons
      */
     hash: function(type) {
-
+      return Canteen.md5(this.serialize(type));
     }
+  };
+
+  // ================================ Global Config ================================
+
+  Canteen.globals = {
+    STACK_SIZE: 100
   };
 
   // ================================ Initialization Scripts ================================

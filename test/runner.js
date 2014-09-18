@@ -20,5 +20,9 @@ afterEach(function() {
 
   testElements[len-1].appendChild(test.canvas);
 
-  console.log('TITLE: ', test.title, ', STRICT JSON: ', test.context.canteen.serialize());
+  console.log('====== ' + test.title);
+  console.log('strict JSON: ', test.context.canteen.serialize());
+  console.log('strict hash: ', test.context.canteen.hash());
+  console.log(' loose JSON: ', test.context.canteen.serialize('loose'));
+  console.log(' loose hash: ', test.context.canteen.hash('loose'));
 });

@@ -223,18 +223,16 @@
     STACK_SIZE: 100
   };
 
-  // ================================ Initialization Scripts ================================
+  // ================================ Initialization ================================
 
-  function overrideGetContext() {
+  (function(){
     var origGetContext = HTMLCanvasElement.prototype.getContext;
 
     HTMLCanvasElement.prototype.getContext = function() {
       var context = origGetContext.apply(this, arguments);
       return new Canteen(context);
     }
-  }
-
-  overrideGetContext();
+  })();
 
   window.Canteen = Canteen;
 })();;/*

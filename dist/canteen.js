@@ -135,7 +135,7 @@
       this._slice();
     },
     /**
-     * push instruction atribute onto the stack
+     * push instruction attribute onto the stack
      * @method _pushAttr
      * @param {String} attr
      * @param {*} val

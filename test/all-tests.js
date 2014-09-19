@@ -16,11 +16,11 @@ describe('#main', function(){
     var context = this.test.context;
 
     context.beginPath();
-    context.rect(10, 10, 100, 80, PI2, false);
+    context.rect(10, 10, 100, 80);
     context.fillStyle = 'red';
     context.fill();
 
-    assert.equal(context.hash(), 'b50a54838048927c11b4f6b0e0885ba1');
+    assert.equal(context.hash(), '6d09e269a28763a02f82c532675da8c8');
   });
 
   it('should shorten the stack if it gets too large', function(){

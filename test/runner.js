@@ -23,6 +23,6 @@ afterEach(function() {
   console.log('%c' + test.title, 'background-color: #ddd');
   console.log('strict JSON: ', test.context.json());
   console.log('strict hash: ', test.context.hash());
-  console.log('loose JSON: ', test.context.json('loose'));
-  console.log('loose hash: ', test.context.hash('loose'));
+  console.log('loose JSON: ', test.context.json({type: 'loose'}));
+  console.log('loose hash: ', test.context.hash({type: 'loose'}));
 });

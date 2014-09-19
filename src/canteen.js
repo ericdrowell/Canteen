@@ -101,10 +101,12 @@
     /**
      * get a stack of operations
      * @method stack
-     * @param {String} [type='strict'] - "strict" or "loose"
+     * @param {Object} config
+     * @param {String} [config.type='strict'] - "strict" or "loose"
      */  
-    stack: function(type) {
-      var ret = [];
+    stack: function(config) {
+      var type = config && config.type,
+          ret = [];
 
       if (!type || type === 'strict') {
         ret = this._stack;
@@ -120,18 +122,20 @@
     /**
      * serialize a stack into a string
      * @method json
-     * @param {String} [type='strict'] - "strict" or "loose"
+     * @param {Object} config
+     * @param {String} [config.type='strict'] - "strict" or "loose"
      */  
-    json: function(type) {
-      return JSON.stringify(this.stack(type));
+    json: function(config) {
+      return JSON.stringify(this.stack(config));
     },
     /**
      * convert a stack into a small hash string for easy comparisons
      * @method hash
-     * @param {String} [type='strict'] - "strict" or "loose"
+     * @param {Object} config
+     * @param {String} [config.type='strict'] - "strict" or "loose"
      */  
-    hash: function(type) {
-      return Canteen.md5(this.json(type));
+    hash: function(config) {
+      return Canteen.md5(this.json(config));
     },
 
     // all canvas methods

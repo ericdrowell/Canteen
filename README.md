@@ -10,6 +10,6 @@
   
 ## Overview
 
-Canteen is an open source JavaScript library which makes it super easy to test canvas outputs in a cross browser, and cross browser version way.  The name "Canteen" is obtained by shortening the phrase "[CAN]vas for [TE]st [EN]vironments".
+Canteen is an open source JavaScript library which makes it super easy to test canvas outputs in a cross browser, and cross browser version way.  The name "Canteen" is obtained by shortening the phrase "Canvas in Test Environments".
   
   

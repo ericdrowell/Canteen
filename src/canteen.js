@@ -63,47 +63,11 @@
   // Canteen methods 
   Canteen.prototype = { 
     /**
-     * push instruction onto the stack
-     * @method _pushMethod
-     * @param {String} method
-     * @param {arguments} arguments
-     * @private
-     */
-    _pushMethod: function(method, arguments) {
-      this._stack.push({
-        method: method,
-        arguments: Array.prototype.slice.call(arguments, 0)
-      }); 
-
-      this._validate();
-    },
-    _pushAttr: function(attr, val) {
-      this._stack.push({
-        attr: attr,
-        val: val
-      }); 
-
-      this._validate();
-    },
-    /**
-     * validate the stack.  For now, this means making sure that it doesn't exceed
-     *  the STACK_SIZE.  if it does, then shorten the stack starting from the beginning
-     * @method _validate
-     * @private
-     */
-    _validate: function() {
-      var stack = this._stack,
-          len = stack.length,
-          exceded = len - Canteen.globals.STACK_SIZE;
-      if (exceded > 0) {
-        this._stack = stack.slice(exceded);
-      }
-    },
-    /**
      * get a stack of operations
      * @method stack
      * @param {Object} config
      * @param {String} [config.type='strict'] - "strict" or "loose"
+     * @public
      */  
     stack: function(config) {
       var type = config && config.type,
@@ -125,6 +89,7 @@
      * @method json
      * @param {Object} config
      * @param {String} [config.type='strict'] - "strict" or "loose"
+     * @public
      */  
     json: function(config) {
       return JSON.stringify(this.stack(config));
@@ -134,13 +99,58 @@
      * @method hash
      * @param {Object} config
      * @param {String} [config.type='strict'] - "strict" or "loose"
+     * @public
      */  
     hash: function(config) {
       return Canteen.md5(this.json(config));
+    },
+    /**
+     * push instruction method onto the stack
+     * @method _pushMethod
+     * @param {String} method
+     * @param {arguments} arguments
+     * @private
+     */
+    _pushMethod: function(method, args) {
+      this._stack.push({
+        method: method,
+        arguments: Array.prototype.slice.call(args, 0)
+      }); 
+
+      this._slice();
+    },
+    /**
+     * push instruction atribute onto the stack
+     * @method _pushAttr
+     * @param {String} attr
+     * @param {*} val
+     * @private
+     */
+    _pushAttr: function(attr, val) {
+      this._stack.push({
+        attr: attr,
+        val: val
+      }); 
+
+      this._slice();
+    },
+    /**
+     * slice the stack if needed.  This means making sure that it doesn't exceed
+     *  the STACK_SIZE.  if it does, then shorten the stack starting from the beginning
+     * @method _slice
+     * @private
+     */
+    _slice: function() {
+      var stack = this._stack,
+          len = stack.length,
+          exceded = len - Canteen.globals.STACK_SIZE;
+      if (exceded > 0) {
+        this._stack = stack.slice(exceded);
+      }
     }
   }; 
 
-  // generate observable methods
+  // generate observable methods and add them to the Canteen prototype
   (function(){
     var proto = CanvasRenderingContext2D.prototype,
       key, val;
@@ -162,9 +172,7 @@
 
   // ================================ Global Config ================================
   /**
-   * global config
-   * these globals can be changed at anytime - they are not cached
-   * @method hash
+   * global config.  You can directly change these values in order to configure Canteen
    * @static
    * @example 
    *  // change stack size to 3000
@@ -176,6 +184,8 @@
 
   // ================================ Initialization ================================
 
+  // override the canvas context getContext method in order to automatically instantiate
+  // a Canteen instance and wrap the native context object
   (function(){
     var origGetContext = HTMLCanvasElement.prototype.getContext;
 
@@ -185,5 +195,7 @@
     }
   })();
 
+  // make the Canteen namespace global so that developers can configure
+  // it via Canteen.globals, or override methods if desired
   window.Canteen = Canteen;
 })();

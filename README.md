@@ -29,7 +29,7 @@ context.arc(50, 50, 30, 0, Math.PI * 2, false);
 context.fillStyle = 'red';
 context.fill();
 
-// return a strict array of instruction stack
+// return a strict array of the instruction stack
 var stack = context.stack(); 
 
 // return a strict json string of the instruction stack
@@ -38,7 +38,7 @@ var json = context.json();
 // return a strict md5 hash of the instruction stack, i.e. "593812a5c4abaae60c567bf96e59631d"
 var hash = context.hash();
 
-// return a loose array of instruction stack
+// return a loose array of the instruction stack
 var stack = context.stack({
   type: 'loose'
 }); 

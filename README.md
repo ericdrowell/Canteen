@@ -54,7 +54,7 @@ var hash = context.hash({
 }); 
 
 // example unit test assertion
-assert.equal(context.hash(), '6d09e269a28763a02f82c532675da8c8'); // test passes
+assert.equal(context.hash(), '593812a5c4abaae60c567bf96e59631d'); // test passes
 ```
   
   

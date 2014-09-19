@@ -14,6 +14,11 @@
  * limitations under the License.
  */
  ;(function() {
+  // ================================ Constants ================================
+  var CONTEXT_2D_PROPERTIES = [
+    'fillStyle'
+  ];
+
   // ================================ Utils ================================
   /**
    * each iterator
@@ -39,8 +44,10 @@
    * Canteen Constructor
    * @constructor
    */
-  Canteen = function() {
+  Canteen = function(obj) {
     this.stack = [];
+    this.obj = obj;
+    this._observeProperties();
   };
 
   // Canteen methods 
@@ -108,7 +115,22 @@
      */  
     hash: function(type) {
       return Canteen.md5(this.serialize(type));
-    }  
+    },
+    _observeProperties: function() {
+      // var obj = this.obj;
+
+      // this.obj.fillStyle = 'blue';
+      // var origSetter = obj.__lookupSetter__('fillStyle');
+
+      // console.log(origSetter)
+
+      // this.obj.__defineSetter__('fillStyle', function(val) {
+   
+      //   console.log('fillStyle')
+
+  
+      // });
+    }
   }; 
 
   // ================================ Global Config ================================
@@ -133,16 +155,17 @@
     };
 
     HTMLCanvasElement.prototype.getContext = function() {
-      var ret = origCanvasMethods.getContext.apply(this, arguments);
+      var context = origCanvasMethods.getContext.apply(this, arguments);
       // attach Canteen observer to canvas element
-      this.canteen = new Canteen();
+      this.canteen = new Canteen(this);
       // attach Conteen observer to context object
-      ret.canteen = new Canteen();
-      return ret;
+      context.canteen = new Canteen(context);
+
+      return context;
     }
   }
 
-  function observe(key, method) {
+  function observeMethod(key, method) {
     CanvasRenderingContext2D.prototype[key] = function() {
       var ret = method.apply(this, arguments);
       this.canteen._pushMethod(key, arguments);
@@ -154,7 +177,8 @@
     var proto = CanvasRenderingContext2D.prototype,
         orig2dContextMethods = {}, 
         key, method;
-    // store original methods
+   
+    // observe method changes
     for (key in proto) {
       // NOTE: Firefox fails when then key is "canvas" and we try accessing
       // proto[key].  Adding a try catch here for now until we can find a more elegant way around this.
@@ -169,7 +193,7 @@
     }
     // override methods
     for (key in orig2dContextMethods) {
-      observe(key, orig2dContextMethods[key]);
+      observeMethod(key, orig2dContextMethods[key]);
     }
   }
 
@@ -196,9 +220,7 @@
 
 /*jslint bitwise: true */
 /*global unescape, define */
-console.log(111);
 (function ($) {
-    console.log($)
     'use strict';
 
     /*

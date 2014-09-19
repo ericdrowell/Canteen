@@ -4,15 +4,36 @@
     <title>Canteen Tests</title>
     <link rel="stylesheet" href="../node_modules/mocha/mocha.css" />
     <style>
+      /* mocha overrides */
       #mocha {
         padding: 0;
         margin: 0;
+      }
+      #mocha .test {
+        padding-bottom: 10px;
       }
       #mocha .test canvas {
         border: 2px solid #ddd;
       }
       #mocha .test pre {
         float: none;
+      }
+      #mocha .test p {
+        padding: 0;
+        margin: 0;
+        font-size: 14px;
+        color: #888;
+        line-height: 16px;
+      }
+      #mocha .test.pass::before {
+        font-size: 20px;
+      }
+      #mocha .test h2 {
+        font-size: 20px;
+      }
+
+      #mocha-stats {
+        background-color: white;
       }
     </style>
   </head>

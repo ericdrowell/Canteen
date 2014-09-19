@@ -20,7 +20,7 @@
   ];
 
   // ================================ Utils ================================
-  
+
   function each(arr, func) {
     var len = arr.length,
         n;
@@ -171,7 +171,7 @@
    *  Canteen.globals.STACK_SIZE = 3000;
    */ 
   Canteen.globals = {
-    STACK_SIZE: 100
+    STACK_SIZE: 10000
   };
 
   // ================================ Initialization ================================

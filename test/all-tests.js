@@ -1,7 +1,18 @@
 var PI2 = Math.PI * 2;
 
 describe('#main', function(){
-  it('should capture instructions for a simple circle', function(){
+  it('should output the correct strict json for circle', function(){
+    var context = this.test.context;
+
+    context.beginPath();
+    context.arc(50, 50, 30, 0, PI2, false);
+    context.fillStyle = 'red';
+    context.fill();
+
+    assert.equal(context.json(), '[{"method":"beginPath","arguments":[]},{"method":"arc","arguments":[50,50,30,0,6.283185307179586,false]},{"attr":"fillStyle","val":"red"},{"method":"fill","arguments":[]}]');
+  });
+
+  it('should output the correct strict hash for circle', function(){
     var context = this.test.context;
 
     context.beginPath();
@@ -10,6 +21,28 @@ describe('#main', function(){
     context.fill();
 
     assert.equal(context.hash(), '593812a5c4abaae60c567bf96e59631d');
+  });
+
+  it('should output the correct loose json for circle', function(){
+    var context = this.test.context;
+
+    context.beginPath();
+    context.arc(50, 50, 30, 0, PI2, false);
+    context.fillStyle = 'red';
+    context.fill();
+
+    assert.equal(context.json({type: 'loose'}), '["beginPath","arc","fillStyle","fill"]');
+  });
+
+  it('should output the correct loose hash for circle', function(){
+    var context = this.test.context;
+
+    context.beginPath();
+    context.arc(50, 50, 30, 0, PI2, false);
+    context.fillStyle = 'red';
+    context.fill();
+
+    assert.equal(context.hash({type: 'loose'}), '7f2734b2c8027e5f8a1429e83361cb5c');
   });
 
   it('should capture instructions for a simple rectangle', function(){

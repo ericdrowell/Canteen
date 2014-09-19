@@ -82,6 +82,7 @@
      * @method stack
      * @param {Object} config
      * @param {String} [config.type='strict'] - "strict" or "loose"
+     * @returns {Array}
      * @public
      */  
     stack: function(config) {
@@ -104,6 +105,7 @@
      * @method json
      * @param {Object} config
      * @param {String} [config.type='strict'] - "strict" or "loose"
+     * @returns {String}
      * @public
      */  
     json: function(config) {
@@ -115,9 +117,18 @@
      * @param {Object} config
      * @param {String} [config.type='strict'] - "strict" or "loose"
      * @public
+     * @returns {String}
      */  
     hash: function(config) {
       return Canteen.md5(this.json(config));
+    },
+    /**
+     * clear the stack
+     * @method clear
+     * @public
+     */  
+    clear: function() {
+      this._stack = [];
     },
     /**
      * push instruction method onto the stack

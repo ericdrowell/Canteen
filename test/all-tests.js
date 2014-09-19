@@ -85,4 +85,23 @@ describe('#main', function(){
     // put the stack size back to the default for future tests
     Canteen.globals.STACK_SIZE = origStackSize;
   });
+
+  it('should clear the stack when calling clear()', function(){
+    var context = this.test.context;
+
+    context.beginPath();
+    context.rect(10, 10, 100, 80);
+    context.fillStyle = 'red';
+    context.fill();
+
+    assert.equal(context.stack().length, 4);
+
+    context.clear();
+    assert.equal(context.stack().length, 0);
+
+    context.beginPath();
+    assert.equal(context.stack().length, 1);
+
+
+  });
 });

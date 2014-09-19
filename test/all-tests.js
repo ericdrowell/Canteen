@@ -9,7 +9,7 @@ describe('#main', function(){
     context.fillStyle = 'red';
     context.fill();
 
-    assert.equal(context.canteen.hash(), '8fdebdf8ddc19b5c75ea9d2e402aebc7');
+    assert.equal(context.hash(), '593812a5c4abaae60c567bf96e59631d');
   });
 
   it('should capture instructions for a simple rectangle', function(){
@@ -20,7 +20,7 @@ describe('#main', function(){
     context.fillStyle = 'red';
     context.fill();
 
-    assert.equal(context.canteen.hash(), 'e8320dcfb249196972ad1d403e22de9e');
+    assert.equal(context.hash(), 'b50a54838048927c11b4f6b0e0885ba1');
   });
 
   it('should shorten the stack if it gets too large', function(){
@@ -29,25 +29,25 @@ describe('#main', function(){
 
     Canteen.globals.STACK_SIZE = 3;
 
-    assert.equal(context.canteen.getStack().length, 0);
+    assert.equal(context.getStack().length, 0);
 
     context.beginPath();
-    assert.equal(context.canteen.getStack().length, 1);
+    assert.equal(context.getStack().length, 1);
 
     context.closePath();
-    assert.equal(context.canteen.getStack().length, 2);
+    assert.equal(context.getStack().length, 2);
 
     context.beginPath();
-    assert.equal(context.canteen.getStack().length, 3);
-    assert.equal(context.canteen.serialize(), '[{"method":"beginPath","arguments":[]},{"method":"closePath","arguments":[]},{"method":"beginPath","arguments":[]}]');
+    assert.equal(context.getStack().length, 3);
+    assert.equal(context.serialize(), '[{"method":"beginPath","arguments":[]},{"method":"closePath","arguments":[]},{"method":"beginPath","arguments":[]}]');
 
-  
+
     // because the stack size is set to 3, pushing a new element on the stack
     // should result in the removal of the first item, therefore keeping the
     // stack at size 3
     context.closePath();
-    assert.equal(context.canteen.getStack().length, 3);
-    assert.equal(context.canteen.serialize(), '[{"method":"closePath","arguments":[]},{"method":"beginPath","arguments":[]},{"method":"closePath","arguments":[]}]');
+    assert.equal(context.getStack().length, 3);
+    assert.equal(context.serialize(), '[{"method":"closePath","arguments":[]},{"method":"beginPath","arguments":[]},{"method":"closePath","arguments":[]}]');
 
     // put the stack size back to the default for future tests
     Canteen.globals.STACK_SIZE = origStackSize;

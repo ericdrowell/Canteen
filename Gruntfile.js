@@ -1,8 +1,7 @@
 module.exports = function(grunt) {
   var files = [
     'src/canteen.js',
-    'lib/md5.js',
-    'lib/observe.js'
+    'lib/md5.js'
   ];
 
   // Project configuration.

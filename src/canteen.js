@@ -1,7 +1,22 @@
 (function() {
   // ================================ Constants ================================
-  var CONTEXT_2D_PROPERTIES = [
-    'fillStyle'
+  var CONTEXT_2D_ATTRIBUTES = [
+    'fillStyle',
+    'font',
+    'globalAlpha',
+    'globalCompositeOperation',
+    'lineCap',
+    'lineDashOffset',
+    'lineJoin',
+    'lineWidth',
+    'miterLimit',
+    'shadowBlur',
+    'shadowColor',
+    'shadowOffsetX',
+    'shadowOffsetY',
+    'strokeStyle',
+    'textAlign',
+    'textBaseline'
   ];
 
   // ================================ Utils ================================
@@ -17,22 +32,31 @@
       func(n, arr[n]);
     }
   }
-
-  function isFunction(functionToCheck) {
-    var getType = {};
-    return functionToCheck && getType.toString.call(functionToCheck) === '[object Function]';
-  }
-
+  
   // ================================ Canteen Class ================================
 
   /**
    * Canteen Constructor
    * @constructor
    */
-  Canteen = function(obj) {
+  var Canteen = function(context) {
+    var that = this;
+
     this.stack = [];
-    this.obj = obj;
-    this._observeProperties();
+    this.context = context;
+
+    // add observable attributes
+    each(CONTEXT_2D_ATTRIBUTES, function(n, key) {
+      Object.defineProperty(that, key, {
+        get: function() {
+          return that.context[key];
+        },
+        set: function(val) {
+          that._pushAttr(key, val);
+          that.context[key] = val;
+        }
+      }); 
+    });
   };
 
   // Canteen methods 
@@ -48,6 +72,14 @@
       this.stack.push({
         method: method,
         arguments: Array.prototype.slice.call(arguments, 0)
+      }); 
+
+      this._validate();
+    },
+    _pushAttr: function(attr, val) {
+      this.stack.push({
+        attr: attr,
+        val: val
       }); 
 
       this._validate();
@@ -79,7 +111,7 @@
       }
       else {
         each(this.stack, function(n, el) {
-          ret.push(el.method);
+          ret.push(el.method || el.attr);
         });
       } 
 
@@ -101,20 +133,60 @@
     hash: function(type) {
       return Canteen.md5(this.serialize(type));
     },
-    _observeProperties: function() {
-      // var obj = this.obj;
 
-      // this.obj.fillStyle = 'blue';
-      // var origSetter = obj.__lookupSetter__('fillStyle');
+    // all canvas methods
+    arc: function(a, b, c, d, e, f) {
+      this._pushMethod('arc', arguments);
+      return this.context.arc(a, b, c, d, e, f);
+    },
+    arcTo: function(a, b, c, d, e) {
+      this._pushMethod('arcTo', arguments);
+      return this.context.arcTo(a, b, c, d, e);
+    },
+    beginPath: function() {
+      this._pushMethod('beginPath', arguments);
+      return this.context.beginPath();
+    },
+    bezierCurveTo: function(a, b, c, d, e, f) {
+      this._pushMethod('bezierCurveTo', arguments);
+      return this.context.bezierCurveTo(a, b, c, d, e, f);
+    },
+    clearRect: function(a, b, c, d) {
+      this._pushMethod('clearRect', arguments);
+      return this.context.clearRect(a, b, c, d);
+    },
+    clip: function() {
+      this._pushMethod('clip', arguments);
+      return this.context.clip();
+    },
+    closePath: function() {
+      this._pushMethod('closePath', arguments);
+      return this.context.closePath();
+    },
+    createImageData: function() {
+      var a = arguments;
+      this._pushMethod('createImageData', arguments);
+      switch (arguments.length) {
+        case 1: this.context.createImageData(a[0]); break;
+        case 2: this.context.createImageData(a[0], a[1]); break;
+      }
+    },
 
-      // console.log(origSetter)
 
-      // this.obj.__defineSetter__('fillStyle', function(val) {
-   
-      //   console.log('fillStyle')
 
-  
-      // });
+    
+
+    fill: function() {
+      this._pushMethod('fill', arguments);
+      return this.context.fill();  
+    },
+    rect: function(a, b, c, d) {
+      this._pushMethod('rect', arguments);
+      return this.context.rect(a, b, c, d);
+    },
+    scale: function(a, b) {
+      this._pushMethod('scale', arguments);
+      return this.context.scale(a, b);
     }
   }; 
 
@@ -134,54 +206,16 @@
 
   // ================================ Initialization Scripts ================================
 
-  function observeCanvasMethods() {
-    var origCanvasMethods = {
-      getContext: HTMLCanvasElement.prototype.getContext
-    };
+  function overrideGetContext() {
+    var origGetContext = HTMLCanvasElement.prototype.getContext;
 
     HTMLCanvasElement.prototype.getContext = function() {
-      var context = origCanvasMethods.getContext.apply(this, arguments);
-      // attach Canteen observer to canvas element
-      this.canteen = new Canteen(this);
-      // attach Conteen observer to context object
-      context.canteen = new Canteen(context);
-
-      return context;
+      var context = origGetContext.apply(this, arguments);
+      return new Canteen(context);
     }
   }
 
-  function observeMethod(key, method) {
-    CanvasRenderingContext2D.prototype[key] = function() {
-      var ret = method.apply(this, arguments);
-      this.canteen._pushMethod(key, arguments);
-      return ret;
-    }
-  }
+  overrideGetContext();
 
-  function observe2dContextMethods() {
-    var proto = CanvasRenderingContext2D.prototype,
-        orig2dContextMethods = {}, 
-        key, method;
-   
-    // observe method changes
-    for (key in proto) {
-      // NOTE: Firefox fails when then key is "canvas" and we try accessing
-      // proto[key].  Adding a try catch here for now until we can find a more elegant way around this.
-      // not sure why Firefox adds a canvas key to the proto anyways.
-      try {
-        method = proto[key];
-        if (proto.hasOwnProperty(key) && isFunction(method)) {
-          orig2dContextMethods[key] = method;
-        }
-      }
-      catch (e) {}
-    }
-    // override methods
-    for (key in orig2dContextMethods) {
-      observeMethod(key, orig2dContextMethods[key]);
-    }
-  }
-
-  observeCanvasMethods();
-  observe2dContextMethods();
+  window.Canteen = Canteen;
 })();

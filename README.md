@@ -32,7 +32,7 @@ context.fill();
 // return a strict array of the instruction stack
 var stack = context.stack(); 
 
-// return a strict json string of the instruction stack
+// return a strict json string of the instruction stack, i.e. [{"method":"beginPath","arguments":[]},{"method":"arc","arguments":[50,50,30,0,6.283185307179586,false]},{"attr":"fillStyle","val":"red"},{"method":"fill","arguments":[]}]
 var json = context.json();
 
 // return a strict md5 hash of the instruction stack, i.e. "593812a5c4abaae60c567bf96e59631d"
@@ -43,12 +43,12 @@ var stack = context.stack({
   type: 'loose'
 }); 
 
-// return a loose json string of the instruction stack
+// return a loose json string of the instruction stack, i.e. ["beginPath","arc","fillStyle","fill"]
 var json = context.json({
   type: 'loose'
 }); 
 
-// return a loose md5 hash of the instruction stack, i.e. "593812a5c4abaae60c567bf96e59631d"
+// return a loose md5 hash of the instruction stack, i.e. "7f2734b2c8027e5f8a1429e83361cb5c"
 var hash = context.hash({
   type: 'loose'
 }); 

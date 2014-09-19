@@ -16,7 +16,7 @@ Canteen is an open source JavaScript library which makes it super easy to test c
 
 * All drawing instructions are recorded as a stack data structure, including method calls and attribute changes
 * Developers can access the stack via context.stack(), context.json(), or context.hash()
-* Filters can be applied to the stack for testing purposes, including a strict vs. loose mode, and instruction ranges
+* Filters can be applied to the stack result, including a strict vs. loose mode, and instruction ranges
 
 ## Examples
 

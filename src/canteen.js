@@ -13,6 +13,11 @@
     }
   }
 
+  function isFunction(functionToCheck) {
+    var getType = {};
+    return functionToCheck && getType.toString.call(functionToCheck) === '[object Function]';
+  }
+
   // ================================ Canteen Class ================================
 
   /**
@@ -23,8 +28,8 @@
     this.stack = [];
   };
 
-  // Canteen methods
-  Canteen.prototype = {
+  // Canteen methods 
+  Canteen.prototype = { 
     /**
      * push instruction onto the stack
      * @method _pushMethod
@@ -69,7 +74,7 @@
         each(this.stack, function(n, el) {
           ret.push(el.method);
         });
-      }
+      } 
 
       return ret;
     },
@@ -88,8 +93,8 @@
      */  
     hash: function(type) {
       return Canteen.md5(this.serialize(type));
-    }
-  };
+    }  
+  }; 
 
   // ================================ Global Config ================================
   /**
@@ -132,10 +137,20 @@
 
   function observe2dContextMethods() {
     var proto = CanvasRenderingContext2D.prototype,
-        orig2dContextMethods = {}, key;
+        orig2dContextMethods = {}, 
+        key, method;
     // store original methods
     for (key in proto) {
-      orig2dContextMethods[key] = proto[key];
+      // NOTE: Firefox fails when then key is "canvas" and we try accessing
+      // proto[key].  Adding a try catch here for now until we can find a more elegant way around this.
+      // not sure why Firefox adds a canvas key to the proto anyways.
+      try {
+        method = proto[key];
+        if (proto.hasOwnProperty(key) && isFunction(method)) {
+          orig2dContextMethods[key] = method;
+        }
+      }
+      catch (e) {}
     }
     // override methods
     for (key in orig2dContextMethods) {

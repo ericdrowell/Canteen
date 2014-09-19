@@ -20,10 +20,7 @@
   ];
 
   // ================================ Utils ================================
-  /**
-   * each iterator
-   * @function
-   */ 
+  
   function each(arr, func) {
     var len = arr.length,
         n;
@@ -31,6 +28,10 @@
     for (n=0; n<len; n++) {
       func(n, arr[n]);
     }
+  }
+
+  function isFunction(func) {
+    return func && {}.toString.call(func) === '[object Function]';
   }
   
   // ================================ Canteen Class ================================
@@ -136,63 +137,28 @@
      */  
     hash: function(config) {
       return Canteen.md5(this.json(config));
-    },
-
-    // all canvas methods
-    arc: function(a, b, c, d, e, f) {
-      this._pushMethod('arc', arguments);
-      return this.context.arc(a, b, c, d, e, f);
-    },
-    arcTo: function(a, b, c, d, e) {
-      this._pushMethod('arcTo', arguments);
-      return this.context.arcTo(a, b, c, d, e);
-    },
-    beginPath: function() {
-      this._pushMethod('beginPath', arguments);
-      return this.context.beginPath();
-    },
-    bezierCurveTo: function(a, b, c, d, e, f) {
-      this._pushMethod('bezierCurveTo', arguments);
-      return this.context.bezierCurveTo(a, b, c, d, e, f);
-    },
-    clearRect: function(a, b, c, d) {
-      this._pushMethod('clearRect', arguments);
-      return this.context.clearRect(a, b, c, d);
-    },
-    clip: function() {
-      this._pushMethod('clip', arguments);
-      return this.context.clip();
-    },
-    closePath: function() {
-      this._pushMethod('closePath', arguments);
-      return this.context.closePath();
-    },
-    createImageData: function() {
-      var a = arguments;
-      this._pushMethod('createImageData', arguments);
-      switch (arguments.length) {
-        case 1: this.context.createImageData(a[0]); break;
-        case 2: this.context.createImageData(a[0], a[1]); break;
-      }
-    },
-
-
-
-
-
-    fill: function() {
-      this._pushMethod('fill', arguments);
-      return this.context.fill();  
-    },
-    rect: function(a, b, c, d) {
-      this._pushMethod('rect', arguments);
-      return this.context.rect(a, b, c, d);
-    },
-    scale: function(a, b) {
-      this._pushMethod('scale', arguments);
-      return this.context.scale(a, b);
     }
   }; 
+
+  // generate observable methods
+  (function(){
+    var proto = CanvasRenderingContext2D.prototype,
+      key, val;
+
+    function addMethod(key, val) {
+      Canteen.prototype[key] = function() {
+        this._pushMethod(key, arguments);
+        return this.context[key].apply(this.context, arguments);
+      };
+    }
+
+    for (key in proto) {
+      val = proto[key];
+      if (isFunction(val)) {
+        addMethod(key, val);
+      }    
+    }
+  })();
 
   // ================================ Global Config ================================
   /**

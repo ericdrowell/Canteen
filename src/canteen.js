@@ -42,7 +42,7 @@
   var Canteen = function(context) {
     var that = this;
 
-    this.stack = [];
+    this._stack = [];
     this.context = context;
 
     // add observable attributes
@@ -69,7 +69,7 @@
      * @private
      */
     _pushMethod: function(method, arguments) {
-      this.stack.push({
+      this._stack.push({
         method: method,
         arguments: Array.prototype.slice.call(arguments, 0)
       }); 
@@ -77,7 +77,7 @@
       this._validate();
     },
     _pushAttr: function(attr, val) {
-      this.stack.push({
+      this._stack.push({
         attr: attr,
         val: val
       }); 
@@ -91,26 +91,26 @@
      * @private
      */
     _validate: function() {
-      var stack = this.stack,
+      var stack = this._stack,
           len = stack.length,
           exceded = len - Canteen.globals.STACK_SIZE;
       if (exceded > 0) {
-        this.stack = stack.slice(exceded);
+        this._stack = stack.slice(exceded);
       }
     },
     /**
      * get a stack of operations
-     * @method getStack
+     * @method stack
      * @param {String} [type='strict'] - "strict" or "loose"
      */  
-    getStack: function(type) {
+    stack: function(type) {
       var ret = [];
 
       if (!type || type === 'strict') {
-        ret = this.stack;
+        ret = this._stack;
       }
       else {
-        each(this.stack, function(n, el) {
+        each(this._stack, function(n, el) {
           ret.push(el.method || el.attr);
         });
       } 
@@ -119,11 +119,11 @@
     },
     /**
      * serialize a stack into a string
-     * @method serialize
+     * @method json
      * @param {String} [type='strict'] - "strict" or "loose"
      */  
-    serialize: function(type) {
-      return JSON.stringify(this.getStack(type));
+    json: function(type) {
+      return JSON.stringify(this.stack(type));
     },
     /**
      * convert a stack into a small hash string for easy comparisons
@@ -131,7 +131,7 @@
      * @param {String} [type='strict'] - "strict" or "loose"
      */  
     hash: function(type) {
-      return Canteen.md5(this.serialize(type));
+      return Canteen.md5(this.json(type));
     },
 
     // all canvas methods
@@ -174,7 +174,7 @@
 
 
 
-    
+
 
     fill: function() {
       this._pushMethod('fill', arguments);

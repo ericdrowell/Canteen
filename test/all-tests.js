@@ -29,25 +29,25 @@ describe('#main', function(){
 
     Canteen.globals.STACK_SIZE = 3;
 
-    assert.equal(context.getStack().length, 0);
+    assert.equal(context.stack().length, 0);
 
     context.beginPath();
-    assert.equal(context.getStack().length, 1);
+    assert.equal(context.stack().length, 1);
 
     context.closePath();
-    assert.equal(context.getStack().length, 2);
+    assert.equal(context.stack().length, 2);
 
     context.beginPath();
-    assert.equal(context.getStack().length, 3);
-    assert.equal(context.serialize(), '[{"method":"beginPath","arguments":[]},{"method":"closePath","arguments":[]},{"method":"beginPath","arguments":[]}]');
+    assert.equal(context.stack().length, 3);
+    assert.equal(context.json(), '[{"method":"beginPath","arguments":[]},{"method":"closePath","arguments":[]},{"method":"beginPath","arguments":[]}]');
 
 
     // because the stack size is set to 3, pushing a new element on the stack
     // should result in the removal of the first item, therefore keeping the
     // stack at size 3
     context.closePath();
-    assert.equal(context.getStack().length, 3);
-    assert.equal(context.serialize(), '[{"method":"closePath","arguments":[]},{"method":"beginPath","arguments":[]},{"method":"closePath","arguments":[]}]');
+    assert.equal(context.stack().length, 3);
+    assert.equal(context.json(), '[{"method":"closePath","arguments":[]},{"method":"beginPath","arguments":[]},{"method":"closePath","arguments":[]}]');
 
     // put the stack size back to the default for future tests
     Canteen.globals.STACK_SIZE = origStackSize;

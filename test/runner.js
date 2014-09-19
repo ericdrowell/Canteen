@@ -21,8 +21,8 @@ afterEach(function() {
   testElements[len-1].appendChild(test.canvas);
 
   console.log('%c' + test.title, 'background-color: #ddd');
-  console.log('strict JSON: ', test.context.serialize());
+  console.log('strict JSON: ', test.context.json());
   console.log('strict hash: ', test.context.hash());
-  console.log('loose JSON: ', test.context.serialize('loose'));
+  console.log('loose JSON: ', test.context.json('loose'));
   console.log('loose hash: ', test.context.hash('loose'));
 });

@@ -1,5 +1,5 @@
 /**
- * Canteen v0.1.0
+ * Canteen v1.0.0
  * September 26th, 2014
  *
  * Copyright 2014 Platfora, Inc.

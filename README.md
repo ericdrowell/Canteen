@@ -55,6 +55,9 @@ var hash = context.hash({
 
 // example unit test assertion
 assert.equal(context.hash(), '593812a5c4abaae60c567bf96e59631d'); // test passes
+
+// clear the stack
+context.clean();
 ```
   
   

@@ -42,18 +42,22 @@ module.exports = function(grunt) {
       all: ['src/**/*.js']
     },
     replace: {
-      dev: {
+      all: {
         options: {
           variables: {
-            VERSION: 'dev',
-            DATE: '<%= grunt.template.today("yyyy-mm-dd") %>'
+            VERSION: '<%= pkg.version %>',
+            YEAR: '<%= grunt.template.today("yyyy") %>',
+            DATE: '<%= grunt.template.today("mmmm dS, yyyy") %>'
           },
           prefix: '@@'
         },
 
         files: [{
-          src: ['dist/canteen.js'],
+          src: 'dist/canteen.js',
           dest: 'dist/canteen.js'
+        }, {
+          src: 'dist/canteen.min.js',
+          dest: 'dist/canteen.min.js'
         }]
       }
     },
@@ -79,6 +83,6 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-watch');
 
   // Tasks
-  grunt.registerTask('build', ['clean:dist', 'concat:dev', 'uglify:prod', 'concat:devLicense', 'concat:prodLicense']);
+  grunt.registerTask('build', ['clean:dist', 'concat:dev', 'uglify:prod', 'concat:devLicense', 'concat:prodLicense', 'replace:all']);
 
 };

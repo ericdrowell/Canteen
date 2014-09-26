@@ -1,4 +1,7 @@
 /**
+ * Canteen v0.1.0
+ * September 26th, 2014
+ *
  * Copyright 2014 Platfora, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -217,7 +220,17 @@
 
     HTMLCanvasElement.prototype.getContext = function() {
       var context = origGetContext.apply(this, arguments);
-      return new Canteen(context);
+
+      // if the context already has a canteen instance, then return it
+      if (context.canteen) {
+        return context.canteen
+      }
+      // if the context does not have a canteen instance, then instantiate one
+      // and return it
+      else {
+        context.canteen = new Canteen(context);
+        return context.canteen;
+      }
     }
   })();
 

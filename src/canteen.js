@@ -202,7 +202,17 @@
 
     HTMLCanvasElement.prototype.getContext = function() {
       var context = origGetContext.apply(this, arguments);
-      return new Canteen(context);
+
+      // if the context already has a canteen instance, then return it
+      if (context.canteen) {
+        return context.canteen
+      }
+      // if the context does not have a canteen instance, then instantiate one
+      // and return it
+      else {
+        context.canteen = new Canteen(context);
+        return context.canteen;
+      }
     }
   })();
 

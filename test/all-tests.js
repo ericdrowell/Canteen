@@ -16,11 +16,11 @@ describe('#main', function(){
     var context = this.test.context;
 
     context.beginPath();
-    context.arc(50, 50, 30, 0, PI2, false);
+    context.arc(52, 50, 30, 0, PI2, false);
     context.fillStyle = 'red';
     context.fill();
 
-    assert.equal(context.hash(), '593812a5c4abaae60c567bf96e59631d');
+    assert.equal(context.hash(), '053d66ac787ea2c5ae3590a6a6c0d4e9');
   });
 
   it('should output the correct loose json for circle', function(){
@@ -104,4 +104,24 @@ describe('#main', function(){
 
 
   });
+
+  it('calling getContext() multiple times should not create new Canteen instances', function(){
+    var context = this.test.context;
+
+    context.beginPath();
+    context.rect(10, 10, 100, 80);
+    context.fillStyle = 'red';
+    context.fill();
+
+    // access the context again using getContext()
+    context = this.test.canvas.getContext('2d');
+
+    context.beginPath();
+    context.rect(200, 10, 100, 80);
+    context.fillStyle = 'red';
+    context.fill();
+
+    assert.equal(context.hash(), 'af09f343a0b938607097b03bb9f07b15');
+  });
+
 });

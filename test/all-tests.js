@@ -86,26 +86,7 @@ describe('#main', function(){
     Canteen.globals.STACK_SIZE = origStackSize;
   });
 
-  it('should clear the stack when calling clear()', function(){
-    var context = this.test.context;
-
-    context.beginPath();
-    context.rect(10, 10, 100, 80);
-    context.fillStyle = 'red';
-    context.fill();
-
-    assert.equal(context.stack().length, 4);
-
-    context.clear();
-    assert.equal(context.stack().length, 0);
-
-    context.beginPath();
-    assert.equal(context.stack().length, 1);
-
-
-  });
-
-  it('calling getContext() multiple times should not create new Canteen instances', function(){
+  it('should not create a new canteen instance when getContext() is called multiple times', function(){
     var context = this.test.context;
 
     context.beginPath();
@@ -122,6 +103,26 @@ describe('#main', function(){
     context.fill();
 
     assert.equal(context.hash(), 'af09f343a0b938607097b03bb9f07b15');
+  });
+
+  it('should clear the stack when clean() is called', function(){
+    var context = this.test.context;
+
+    // first check that the stack is clean
+    assert.equal(context.hash(), 'd751713988987e9331980363e24189ce');
+
+    context.beginPath();
+    context.arc(52, 50, 30, 0, PI2, false);
+    context.fillStyle = 'red';
+    context.fill();
+
+    // check that stuff has been drawn onto the canvas
+    assert.equal(context.hash(), '053d66ac787ea2c5ae3590a6a6c0d4e9');
+
+    context.clean();
+
+    // check that it's clean again
+    assert.equal(context.hash(), 'd751713988987e9331980363e24189ce');
   });
 
 });

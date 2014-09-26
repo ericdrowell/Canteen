@@ -109,10 +109,10 @@
     },
     /**
      * clear the stack
-     * @method clear
+     * @method clean
      * @public
      */  
-    clear: function() {
+    clean: function() {
       this._stack = [];
     },
     /**

@@ -16,14 +16,17 @@ Canteen is an open source JavaScript library which makes it super easy to test c
 
 * All drawing instructions are recorded as a stack data structure, including method calls and attribute changes
 * Developers can access the stack via context.stack(), context.json(), or context.hash()
-* Filters can be applied to the stack result, including a strict vs. loose mode, and instruction ranges
+* Two capture modes, strict and loose.  Strict mode captures method calls and arguments, as well as property changes and values.  Loose mode only captures method calls and property changes.  Use strict mode if you care about the arguments and values, and use loose mode if you just care about the sequence of drawing instructions.
 
 ## Examples
 
 ```javascript
 var canvas = document.getElementById('canvas');
+// when getContext() is called, Canteen automatically instantiates
+// and returns a Canteen canvas context wrapper
 var context = canvas.getContext('2d');
     
+// draw stuff
 context.beginPath();
 context.arc(50, 50, 30, 0, Math.PI * 2, false);
 context.fillStyle = 'red';

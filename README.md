@@ -20,6 +20,10 @@ Canteen is an open source JavaScript library which makes it super easy to test c
 
 ## Examples
 
+```html
+<script src="canteen.min.js"></script>
+```
+
 ```javascript
 var canvas = document.getElementById('canvas');
 // when getContext() is called, Canteen automatically instantiates

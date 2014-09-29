@@ -31,7 +31,7 @@ describe('#main', function(){
     context.fillStyle = 'red';
     context.fill();
 
-    assert.equal(context.json({type: 'loose'}), '["beginPath","arc","fillStyle","fill"]');
+    assert.equal(context.json({loose: true}), '["beginPath","arc","fillStyle","fill"]');
   });
 
   it('should output the correct loose hash for circle', function(){
@@ -42,7 +42,7 @@ describe('#main', function(){
     context.fillStyle = 'red';
     context.fill();
 
-    assert.equal(context.hash({type: 'loose'}), '7f2734b2c8027e5f8a1429e83361cb5c');
+    assert.equal(context.hash({loose: true}), '7f2734b2c8027e5f8a1429e83361cb5c');
   });
 
   it('should capture instructions for a simple rectangle', function(){

@@ -66,22 +66,24 @@
      * get a stack of operations
      * @method stack
      * @param {Object} config
-     * @param {String} [config.type='strict'] - "strict" or "loose"
+     * @param {String} [config.loose=false] - Canteen returns stacks in two different modes, strict and loose.
+     *  strict mode returns method calls with arguments, and property name changes with values.  Loose mode
+     *  only returns method calls and property name changes
      * @returns {Array}
      * @public
      */  
     stack: function(config) {
-      var type = config && config.type,
+      var loose = config && config.loose,
           ret = [];
 
-      if (!type || type === 'strict') {
-        ret = this._stack;
-      }
-      else {
+      if (loose) {
         each(this._stack, function(n, el) {
           ret.push(el.method || el.attr);
         });
       } 
+      else {
+        ret = this._stack;
+      }
 
       return ret;
     },
@@ -89,7 +91,9 @@
      * serialize a stack into a string
      * @method json
      * @param {Object} config
-     * @param {String} [config.type='strict'] - "strict" or "loose"
+     * @param {String} [config.loose=false] - Canteen returns stacks in two different modes, strict and loose.
+     *  strict mode returns method calls with arguments, and property name changes with values.  Loose mode
+     *  only returns method calls and property name changes
      * @returns {String}
      * @public
      */  
@@ -100,7 +104,9 @@
      * convert a stack into a small hash string for easy comparisons
      * @method hash
      * @param {Object} config
-     * @param {String} [config.type='strict'] - "strict" or "loose"
+     * @param {String} [config.loose=false] - Canteen returns stacks in two different modes, strict and loose.
+     *  strict mode returns method calls with arguments, and property name changes with values.  Loose mode
+     *  only returns method calls and property name changes
      * @public
      * @returns {String}
      */  
@@ -119,7 +125,7 @@
      * push instruction method onto the stack
      * @method _pushMethod
      * @param {String} method
-     * @param {arguments} arguments
+     * @param {arguments} args
      * @private
      */
     _pushMethod: function(method, args) {

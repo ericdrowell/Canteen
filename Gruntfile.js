@@ -13,27 +13,27 @@ module.exports = function(grunt) {
       },
       dev: {
         src: files,
-        dest: 'dist/canteen.js'
+        dest: 'build/canteen.js'
       },
       devLicense: {
-        src: ['license.js', 'dist/canteen.js'],
-        dest: 'dist/canteen.js'
+        src: ['license.js', 'build/canteen.js'],
+        dest: 'build/canteen.js'
       },
       prodLicense: {
-        src: ['license.js', 'dist/canteen.min.js'],
-        dest: 'dist/canteen.min.js'
+        src: ['license.js', 'build/canteen.min.js'],
+        dest: 'build/canteen.min.js'
       }
     },
     uglify: {
       prod: {
         files: {
-          'dist/canteen.min.js': 'dist/canteen.js'
+          'build/canteen.min.js': 'build/canteen.js'
         }
       }
     },
     clean: {
-      dist: ['dist/*'],
-      examples: ['examples/dist/*']
+      build: ['build/*'],
+      examples: ['examples/build/*']
     },
     jshint: {
       options: {
@@ -53,11 +53,11 @@ module.exports = function(grunt) {
         },
 
         files: [{
-          src: 'dist/canteen.js',
-          dest: 'dist/canteen.js'
+          src: 'build/canteen.js',
+          dest: 'build/canteen.js'
         }, {
-          src: 'dist/canteen.min.js',
-          dest: 'dist/canteen.min.js'
+          src: 'build/canteen.min.js',
+          dest: 'build/canteen.min.js'
         }]
       }
     },
@@ -83,6 +83,6 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-watch');
 
   // Tasks
-  grunt.registerTask('build', ['clean:dist', 'concat:dev', 'uglify:prod', 'concat:devLicense', 'concat:prodLicense', 'replace:all']);
+  grunt.registerTask('build', ['clean:build', 'concat:dev', 'uglify:prod', 'concat:devLicense', 'concat:prodLicense', 'replace:all']);
 
 };

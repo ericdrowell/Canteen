@@ -47,17 +47,17 @@ var hash = context.hash();
 
 // return a loose array of the instruction stack
 var stack = context.stack({
-  type: 'loose'
+  loose: true
 }); 
 
 // return a loose json string of the instruction stack, i.e. ["beginPath","arc","fillStyle","fill"]
 var json = context.json({
-  type: 'loose'
+  loose: true
 }); 
 
 // return a loose md5 hash of the instruction stack, i.e. "7f2734b2c8027e5f8a1429e83361cb5c"
 var hash = context.hash({
-  type: 'loose'
+  loose: true
 }); 
 
 // example unit test assertion

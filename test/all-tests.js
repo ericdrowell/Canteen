@@ -9,7 +9,7 @@ describe('#main', function(){
     context.fillStyle = 'red';
     context.fill();
 
-    assert.equal(context.json(), '[{"method":"beginPath","arguments":[]},{"method":"arc","arguments":[50,50,30,0,6.283185307179586,false]},{"attr":"fillStyle","val":"red"},{"method":"fill","arguments":[]}]');
+    assert.equal(context.json(), '[{"method":"beginPath","arguments":[]},{"method":"arc","arguments":[50,50,30,0,6.283,false]},{"attr":"fillStyle","val":"red"},{"method":"fill","arguments":[]}]');
   });
 
   it('should output the correct strict hash for circle', function(){
@@ -20,7 +20,7 @@ describe('#main', function(){
     context.fillStyle = 'red';
     context.fill();
 
-    assert.equal(context.hash(), '053d66ac787ea2c5ae3590a6a6c0d4e9');
+    assert.equal(context.hash(), 'ae4a4d42eb0d3701ab31125bf2cb2ba8');
   });
 
   it('should output the correct loose json for circle', function(){
@@ -117,12 +117,24 @@ describe('#main', function(){
     context.fill();
 
     // check that stuff has been drawn onto the canvas
-    assert.equal(context.hash(), '053d66ac787ea2c5ae3590a6a6c0d4e9');
+    assert.equal(context.hash(), 'ae4a4d42eb0d3701ab31125bf2cb2ba8');
 
     context.clean();
 
     // check that it's clean again
     assert.equal(context.hash(), 'd751713988987e9331980363e24189ce');
+  });
+
+  it('should output rounded arguments and values for numerical values', function(){
+    var context = this.test.context;
+
+    context.beginPath();
+    context.arc(50, 50, 30, 0, PI2, false);
+    context.fillStyle = 'red';
+    context.globalAlpha = 0.12345678;
+    context.fill();
+
+    assert.equal(context.json(), '[{"method":"beginPath","arguments":[]},{"method":"arc","arguments":[50,50,30,0,6.283,false]},{"attr":"fillStyle","val":"red"},{"attr":"globalAlpha","val":0.123},{"method":"fill","arguments":[]}]');
   });
 
 });

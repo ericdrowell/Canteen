@@ -19,6 +19,8 @@
     'textBaseline'
   ];
 
+  var NUMBER_PRECISION = 1000;
+
   // ================================ Utils ================================
 
   function each(arr, func) {
@@ -129,9 +131,23 @@
      * @private
      */
     _pushMethod: function(method, args) {
+      var roundedArgs = [],
+          len = args.length,
+          n, arg;
+
+      for (n=0; n<len; n++) {
+        arg = args[n];
+        // need to round number values because not all browsers round to the same digit
+        // for irrational numbers like PI
+        if (typeof arg === 'number') {
+          arg = Math.round(arg * NUMBER_PRECISION) / NUMBER_PRECISION;
+        }
+        roundedArgs.push(arg);
+      }
+
       this._stack.push({
         method: method,
-        arguments: Array.prototype.slice.call(args, 0)
+        arguments: Array.prototype.slice.call(roundedArgs, 0)
       }); 
 
       this._slice();
@@ -144,6 +160,12 @@
      * @private
      */
     _pushAttr: function(attr, val) {
+      // need to round number values because not all browsers round to the same digit
+      // for irrational numbers like PI
+      if (typeof val === 'number') {
+        val = Math.round(val * NUMBER_PRECISION) / NUMBER_PRECISION;
+      }
+
       this._stack.push({
         attr: attr,
         val: val

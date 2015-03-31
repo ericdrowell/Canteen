@@ -39,10 +39,10 @@ context.fill();
 // return a strict array of the instruction stack
 var stack = context.stack(); 
 
-// return a strict json string of the instruction stack, i.e. [{"method":"beginPath","arguments":[]},{"method":"arc","arguments":[50,50,30,0,6.283185307179586,false]},{"attr":"fillStyle","val":"red"},{"method":"fill","arguments":[]}] 
+// return a strict json string of the instruction stack, i.e. [{"method":"beginPath","arguments":[]},{"method":"arc","arguments":[50,50,30,0,6.283,false]},{"attr":"fillStyle","val":"red"},{"method":"fill","arguments":[]}] 
 var json = context.json();
 
-// return a strict md5 hash of the instruction stack, i.e. "593812a5c4abaae60c567bf96e59631d"
+// return a strict md5 hash of the instruction stack, i.e. "ae4a4d42eb0d3701ab31125bf2cb2ba8"
 var hash = context.hash();
 
 // return a loose array of the instruction stack
@@ -61,7 +61,7 @@ var hash = context.hash({
 }); 
 
 // example unit test assertion
-assert.equal(context.hash(), '593812a5c4abaae60c567bf96e59631d'); // test passes
+assert.equal(context.hash(), 'ae4a4d42eb0d3701ab31125bf2cb2ba8'); // test passes
 
 // clear the stack
 context.clean();

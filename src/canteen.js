@@ -192,7 +192,7 @@
   // generate observable methods and add them to the Canteen prototype
   (function(){
     var proto = CanvasRenderingContext2D.prototype,
-      key, val;
+      key, val, desc;
 
     function addMethod(key, val) {
       Canteen.prototype[key] = function() {
@@ -202,10 +202,11 @@
     }
 
     for (key in proto) {
-      val = proto[key];
+	  desc = Object.getOwnPropertyDescriptor(CanvasRenderingContext2D.prototype, key);
+      val = (desc && desc.value ? proto[key] : null);
       if (isFunction(val)) {
         addMethod(key, val);
-      }    
+      }
     }
   })();
 

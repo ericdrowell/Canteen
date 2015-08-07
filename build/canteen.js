@@ -1,6 +1,6 @@
 /**
  * Canteen v1.0.3
- * March 30th, 2015
+ * July 15th, 2015
  *
  * Copyright 2015 Platfora, Inc.
  *
@@ -210,7 +210,7 @@
   // generate observable methods and add them to the Canteen prototype
   (function(){
     var proto = CanvasRenderingContext2D.prototype,
-      key, val;
+      key, val, desc;
 
     function addMethod(key, val) {
       Canteen.prototype[key] = function() {
@@ -220,10 +220,11 @@
     }
 
     for (key in proto) {
-      val = proto[key];
+	  desc = Object.getOwnPropertyDescriptor(CanvasRenderingContext2D.prototype, key);
+      val = (desc && desc.value ? proto[key] : null);
       if (isFunction(val)) {
         addMethod(key, val);
-      }    
+      }
     }
   })();
 
@@ -265,7 +266,8 @@
   // make the Canteen namespace global so that developers can configure
   // it via Canteen.globals, or override methods if desired
   window.Canteen = Canteen;
-})();;/*
+})();
+;/*
  * JavaScript MD5 1.0.1
  * https://github.com/blueimp/JavaScript-MD5
  *

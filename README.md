@@ -60,6 +60,16 @@ var hash = context.hash({
   loose: true
 }); 
 
+// return json string of the instruction stack with numeric values rounded to 2 decimal points (the default is 3)
+var json = context.json({
+  decimalPoints: 2
+}); 
+
+// return json string of the instruction stack with numeric values rounded to integers
+var json = context.json({
+  decimalPoints: 0
+}); 
+
 // example unit test assertion
 assert.equal(context.hash(), 'ae4a4d42eb0d3701ab31125bf2cb2ba8'); // test passes
 

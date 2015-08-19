@@ -1,6 +1,6 @@
 {
   "name": "Canteen",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "devDependencies": {
     "chai": "^1.9.1",
     "grunt": "^0.4.5",

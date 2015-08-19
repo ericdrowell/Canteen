@@ -105,10 +105,10 @@ describe('#main', function(){
     assert.equal(context.hash(), 'af09f343a0b938607097b03bb9f07b15');
   });
 
-  it('should clear the stack when clean() is called', function(){
+  it('should clear the stack when clear() is called', function(){
     var context = this.test.context;
 
-    // first check that the stack is clean
+    // first check that the stack is clear
     assert.equal(context.hash(), 'd751713988987e9331980363e24189ce');
 
     context.beginPath();
@@ -119,13 +119,13 @@ describe('#main', function(){
     // check that stuff has been drawn onto the canvas
     assert.equal(context.hash(), 'ae4a4d42eb0d3701ab31125bf2cb2ba8');
 
-    context.clean();
+    context.clear();
 
-    // check that it's clean again
+    // check that it's clear again
     assert.equal(context.hash(), 'd751713988987e9331980363e24189ce');
   });
 
-  it('should output rounded arguments and values for numerical values', function(){
+  it('should round numbers to 3 decimal points by default', function(){
     var context = this.test.context;
 
     context.beginPath();
@@ -134,7 +134,50 @@ describe('#main', function(){
     context.globalAlpha = 0.12345678;
     context.fill();
 
+    // test default 3 decimal points rounding
     assert.equal(context.json(), '[{"method":"beginPath","arguments":[]},{"method":"arc","arguments":[50,50,30,0,6.283,false]},{"attr":"fillStyle","val":"red"},{"attr":"globalAlpha","val":0.123},{"method":"fill","arguments":[]}]');
+  });
+
+  it('should round numbers correctly when using 2 decimal points', function(){
+    var context = this.test.context;
+
+    context.beginPath();
+    context.arc(50, 50, 30, 0, PI2, false);
+    context.fillStyle = 'red';
+    context.globalAlpha = 0.12345678;
+    context.fill();
+
+    assert.equal(context.json({
+      decimalPoints: 2
+    }), '[{"method":"beginPath","arguments":[]},{"method":"arc","arguments":[50,50,30,0,6.28,false]},{"attr":"fillStyle","val":"red"},{"attr":"globalAlpha","val":0.12},{"method":"fill","arguments":[]}]');
+  });
+
+  it('should round numbers correctly when using 1 decimal points', function(){
+    var context = this.test.context;
+
+    context.beginPath();
+    context.arc(50, 50, 30, 0, PI2, false);
+    context.fillStyle = 'red';
+    context.globalAlpha = 0.12345678;
+    context.fill();
+
+    assert.equal(context.json({
+      decimalPoints: 1
+    }), '[{"method":"beginPath","arguments":[]},{"method":"arc","arguments":[50,50,30,0,6.3,false]},{"attr":"fillStyle","val":"red"},{"attr":"globalAlpha","val":0.1},{"method":"fill","arguments":[]}]');
+  });
+
+  it('should round numbers to nearest integer when decimal points is 0', function(){
+    var context = this.test.context;
+
+    context.beginPath();
+    context.arc(50, 50, 30, 0, PI2, false);
+    context.fillStyle = 'red';
+    context.globalAlpha = 0.12345678;
+    context.fill();
+
+    assert.equal(context.json({
+      decimalPoints: 0
+    }), '[{"method":"beginPath","arguments":[]},{"method":"arc","arguments":[50,50,30,0,6,false]},{"attr":"fillStyle","val":"red"},{"attr":"globalAlpha","val":0},{"method":"fill","arguments":[]}]');
   });
 
 });

@@ -1,6 +1,6 @@
 /**
- * Canteen v1.0.3
- * July 15th, 2015
+ * Canteen v1.0.4
+ * August 19th, 2015
  *
  * Copyright 2015 Platfora, Inc.
  *
@@ -37,8 +37,6 @@
     'textBaseline'
   ];
 
-  var NUMBER_PRECISION = 1000;
-
   // ================================ Utils ================================
 
   function each(arr, func) {
@@ -46,12 +44,38 @@
         n;
 
     for (n=0; n<len; n++) {
-      func(n, arr[n]);
+      func(arr[n], n);
     }
+  }
+
+  function round(val, decimalPoints) {
+    var power = Math.pow(10, decimalPoints);
+    return Math.round(val * power) / power; 
+  }
+
+  function roundArr(arr, decimalPoints) {
+    var len = arr.length,
+        ret = [],
+        n;
+
+    for (n=0; n<len; n++) {
+      if (isNumber(arr[n])) {
+        ret.push(round(arr[n], decimalPoints));
+      }
+      else {
+        ret.push(arr[n]);
+      }
+    }
+
+    return ret;
   }
 
   function isFunction(func) {
     return func && {}.toString.call(func) === '[object Function]';
+  }
+
+  function isNumber(val) {
+    return typeof val === 'number';
   }
   
   // ================================ Canteen Class ================================
@@ -67,7 +91,7 @@
     this.context = context;
 
     // add observable attributes
-    each(CONTEXT_2D_ATTRIBUTES, function(n, key) {
+    each(CONTEXT_2D_ATTRIBUTES, function(key, n) {
       Object.defineProperty(that, key, {
         get: function() {
           return that.context[key];
@@ -93,16 +117,33 @@
      * @public
      */  
     stack: function(config) {
-      var loose = config && config.loose,
+      var config = config || {},
+          loose = config.loose,
+          decimalPoints = config.decimalPoints === undefined ? 3 : config.decimalPoints,
           ret = [];
 
       if (loose) {
-        each(this._stack, function(n, el) {
+        each(this._stack, function(el, n) {
           ret.push(el.method || el.attr);
         });
       } 
       else {
-        ret = this._stack;
+        each(this._stack, function(el, n) {
+          // if method instruction
+          if (el.method) {
+            ret.push({
+              method: el.method,
+              arguments: roundArr(el.arguments, decimalPoints)
+            });
+          }
+          // if attr
+          else if (el.attr) {
+            ret.push({
+              attr: el.attr,
+              val: isNumber(el.val) ? round(el.val, decimalPoints) : el.val
+            });
+          }
+        });
       }
 
       return ret;
@@ -135,10 +176,10 @@
     },
     /**
      * clear the stack
-     * @method clean
+     * @method clear
      * @public
      */  
-    clean: function() {
+    clear: function() {
       this._stack = [];
     },
     /**
@@ -149,23 +190,9 @@
      * @private
      */
     _pushMethod: function(method, args) {
-      var roundedArgs = [],
-          len = args.length,
-          n, arg;
-
-      for (n=0; n<len; n++) {
-        arg = args[n];
-        // need to round number values because not all browsers round to the same digit
-        // for irrational numbers like PI
-        if (typeof arg === 'number') {
-          arg = Math.round(arg * NUMBER_PRECISION) / NUMBER_PRECISION;
-        }
-        roundedArgs.push(arg);
-      }
-
       this._stack.push({
         method: method,
-        arguments: Array.prototype.slice.call(roundedArgs, 0)
+        arguments: Array.prototype.slice.call(args, 0)
       }); 
 
       this._slice();
@@ -178,12 +205,6 @@
      * @private
      */
     _pushAttr: function(attr, val) {
-      // need to round number values because not all browsers round to the same digit
-      // for irrational numbers like PI
-      if (typeof val === 'number') {
-        val = Math.round(val * NUMBER_PRECISION) / NUMBER_PRECISION;
-      }
-
       this._stack.push({
         attr: attr,
         val: val

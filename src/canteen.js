@@ -92,9 +92,10 @@
      * get a stack of operations
      * @method stack
      * @param {Object} config
-     * @param {String} [config.loose=false] - Canteen returns stacks in two different modes, strict and loose.
-     *  strict mode returns method calls with arguments, and property name changes with values.  Loose mode
-     *  only returns method calls and property name changes
+     * @param {String} [config.loose=false] - strict mode returns method calls with arguments and property names 
+     *  with values.  loose mode only returns method calls and property names
+     * @param {Number} [config.decimalPoints=3] - number of decimal points to round numeric values to.  The default is 
+     *  3, i.e. 1.23456 will round to 1.234
      * @returns {Array}
      * @public
      */  
@@ -134,9 +135,10 @@
      * serialize a stack into a string
      * @method json
      * @param {Object} config
-     * @param {String} [config.loose=false] - Canteen returns stacks in two different modes, strict and loose.
-     *  strict mode returns method calls with arguments, and property name changes with values.  Loose mode
-     *  only returns method calls and property name changes
+     * @param {String} [config.loose=false] - strict mode returns method calls with arguments and property names 
+     *  with values.  loose mode only returns method calls and property names
+     * @param {Number} [config.decimalPoints=3] - number of decimal points to round numeric values to.  The default is 
+     *  3, i.e. 1.23456 will round to 1.234
      * @returns {String}
      * @public
      */  
@@ -147,9 +149,10 @@
      * convert a stack into a small hash string for easy comparisons
      * @method hash
      * @param {Object} config
-     * @param {String} [config.loose=false] - Canteen returns stacks in two different modes, strict and loose.
-     *  strict mode returns method calls with arguments, and property name changes with values.  Loose mode
-     *  only returns method calls and property name changes
+     * @param {String} [config.loose=false] - strict mode returns method calls with arguments and property names 
+     *  with values.  loose mode only returns method calls and property names
+     * @param {Number} [config.decimalPoints=3] - number of decimal points to round numeric values to.  The default is 
+     *  3, i.e. 1.23456 will round to 1.234
      * @public
      * @returns {String}
      */  

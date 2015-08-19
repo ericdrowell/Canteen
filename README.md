@@ -16,7 +16,8 @@ Canteen is an open source JavaScript library which makes it super easy to test c
 
 * All drawing instructions are recorded as a stack data structure, including method calls and attribute changes
 * Developers can access the stack via context.stack(), context.json(), or context.hash()
-* Two capture modes, strict and loose.  Strict mode captures method calls and arguments, as well as property changes and values.  Loose mode only captures method calls and property changes.  Use strict mode if you care about the arguments and values, and use loose mode if you just care about the sequence of drawing instructions.
+* Developers can capture instructions in a strict mode or loose mode.  Strict mode captures method calls and arguments, as well as property changes and values.  Loose mode only captures method calls and property changes.  Use strict mode if you care about the arguments and values, and use loose mode if you just care about the sequence of drawing instructions.
+* Developers can round numeric values from method parameters or property values by setting the decimalPoints property to a number like 2, 1, or 0.  A value of 0 means that all numeric values are rounded to the nearest integer
 
 ## Examples
 

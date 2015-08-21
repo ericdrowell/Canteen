@@ -75,7 +75,7 @@ var json = context.json({
 assert.equal(context.hash(), 'ae4a4d42eb0d3701ab31125bf2cb2ba8'); // test passes
 
 // clear the stack
-context.clean();
+context.clear();
 ```
   
   

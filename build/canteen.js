@@ -1,8 +1,8 @@
 /**
  * Canteen v1.0.4
- * August 19th, 2015
+ * March 3rd, 2016
  *
- * Copyright 2015 Platfora, Inc.
+ * Copyright 2016 Platfora, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -101,6 +101,14 @@
           that.context[key] = val;
         }
       }); 
+    });
+	
+	// Proxy readonly canvas property
+    // https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/canvas
+    Object.defineProperty(that, 'canvas', {
+      get: function() {
+        return that.context.canvas;
+      }
     });
   };
 

@@ -84,6 +84,14 @@
         }
       }); 
     });
+	
+	// Proxy readonly canvas property
+    // https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/canvas
+    Object.defineProperty(that, 'canvas', {
+      get: function() {
+        return that.context.canvas;
+      }
+    });
   };
 
   // Canteen methods 

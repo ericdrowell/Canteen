@@ -1,8 +1,8 @@
 /**
  * Canteen v1.0.4
- * March 3rd, 2016
+ * July 19th, 2017
  *
- * Copyright 2016 Platfora, Inc.
+ * Copyright 2017 Platfora, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -206,7 +206,7 @@
         arguments: Array.prototype.slice.call(args, 0)
       }); 
 
-      this._slice();
+      // this._slice();
     },
     /**
      * push instruction attribute onto the stack
@@ -221,7 +221,7 @@
         val: val
       }); 
 
-      this._slice();
+      //  this._slice();
     },
     /**
      * slice the stack if needed.  This means making sure that it doesn't exceed

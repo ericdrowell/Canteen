@@ -84,6 +84,14 @@
         }
       }); 
     });
+	
+	// Proxy readonly canvas property
+    // https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/canvas
+    Object.defineProperty(that, 'canvas', {
+      get: function() {
+        return that.context.canvas;
+      }
+    });
   };
 
   // Canteen methods 
@@ -180,7 +188,7 @@
         arguments: Array.prototype.slice.call(args, 0)
       }); 
 
-      this._slice();
+      // this._slice();
     },
     /**
      * push instruction attribute onto the stack
@@ -195,7 +203,7 @@
         val: val
       }); 
 
-      this._slice();
+      //  this._slice();
     },
     /**
      * slice the stack if needed.  This means making sure that it doesn't exceed
